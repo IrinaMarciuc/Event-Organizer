@@ -70,12 +70,18 @@
                                 Delete
                             </button>
                         </div>
+                        <div class="p-2 bd-highlightd">
+                            <a class="btn btn-primary" href="{{ route($viewRouteUrl, ['id' => $event->id]) }}">
+                                Edit
+                            </a>
+                        </div>
+                    @else
+                        <div class="p-2 bd-highlightd">
+                            <a class="btn btn-primary" href="{{ route($viewRouteUrl, ['id' => $event->id]) }}">
+                                View
+                            </a>
+                        </div>
                     @endif
-                    <div class="p-2 bd-highlightd">
-                        <a class="btn btn-primary" href="{{ route($viewRouteUrl, ['id' => $event->id]) }}">
-                            Edit
-                        </a>
-                    </div>
                 </div>
             @endforeach
         </div>

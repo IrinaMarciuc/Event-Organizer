@@ -60,6 +60,20 @@
                     }
                 });
             });
+
+            document.getElementById('image').onchange = function (evt) {
+                var tgt = evt.target || window.event.srcElement,
+                    files = tgt.files;
+
+                // FileReader support
+                if (FileReader && files && files.length) {
+                    var fr = new FileReader();
+                    fr.onload = function () {
+                        document.getElementById("imageDisplay").src = fr.result;
+                    }
+                    fr.readAsDataURL(files[0]);
+                }
+            }
         });
 
         function submitForm() {
@@ -110,6 +124,9 @@
                                         <span class='fa-solid fa-calendar'></span>
                                     </span>
                                 </div>
+                                @if ($errors->has('startDate'))
+                                    <span class="text-danger">{{ $errors->first('startDate') }}</span>
+                                @endif
                             </div>
                             <div class='col-sm-6'>
                                 <label for='endDate' class='form-label'>To</label>
@@ -122,6 +139,9 @@
                                         <span class='fa-solid fa-calendar'></span>
                                     </span>
                                 </div>
+                                @if ($errors->has('endDate'))
+                                    <span class="text-danger">{{ $errors->first('endDate') }}</span>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -129,11 +149,17 @@
                         <label for="location" class="form-label">Location</label>
                         <input type="text" class="form-control" id="location" name="location"
                             placeholder="Location">
+                        @if ($errors->has('location'))
+                            <span class="text-danger">{{ $errors->first('location') }}</span>
+                        @endif
                     </div>
                     <div class="form-group mb-3">
                         <label for="limit" class="form-label">Number of participants</label>
                         <input type="number" class="form-control" id="limit" name="limit"
                             placeholder="Number of participants">
+                        @if ($errors->has('limit'))
+                            <span class="text-danger">{{ $errors->first('limit') }}</span>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -144,12 +170,18 @@
                     <div class="form-group mb-3">
                         <input type="text" placeholder="Name" id="name" class="form-control" name="name">
                     </div>
+                    @if ($errors->has('name'))
+                        <span class="text-danger">{{ $errors->first('name') }}</span>
+                    @endif
                 </div>
                 <div class="p-2 bd-highlight flex-fill">
                     <h3>Event description</h3>
                     <div class="form-group mb-3">
                         <textarea placeholder="Description" id="description" class="form-control" name="description" rows="17"></textarea>
                     </div>
+                    @if ($errors->has('description'))
+                        <span class="text-danger">{{ $errors->first('description') }}</span>
+                    @endif
                 </div>
                 <div class="p-2 bd-highlight align-self-end">
                     <button type="button" onclick="submitForm()" class="btn btn-primary">Create event</button>

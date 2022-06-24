@@ -24,7 +24,7 @@
             </div>
             <div class="p-2 bd-highlightr">
                 <h5>Event information</h5>
-                <i class="fa-solid fa-lg fa-calendar"></i> <?php echo $event->start_date; ?> - <?php echo $event->end_date; ?>
+                <i class="fa-solid fa-lg fa-calendar"></i> <?php echo $event->start_date->toFormattedDateString(); ?> - <?php echo $event->end_date->toFormattedDateString(); ?>
             </div>
             <div class="p-2 bd-highlight">
                 <i class="fa-solid fa-lg fa-location-pin"></i></i> <?php echo $event->location; ?>

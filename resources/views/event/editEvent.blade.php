@@ -20,18 +20,7 @@
                     }
                 }
             });
-            // linked1.dates.formatInput = function(date) {
-            //     var month = '' + (date.getMonth() + 1),
-            //         day = '' + date.getDate(),
-            //         year = date.getFullYear();
-
-            //     if (month.length < 2)
-            //         month = '0' + month;
-            //     if (day.length < 2)
-            //         day = '0' + day;
-
-            //     return [day, month, year].join('/');
-            // }
+            
             const linked2 = new tempusDominus.TempusDominus(document.getElementById('endDatePicker'), {
                 useCurrent: false,
                 display: {
@@ -46,19 +35,7 @@
                     }
                 }
             });
-            // linked2.dates.formatInput = function(date) {
-            //     var month = '' + (date.getMonth() + 1),
-            //         day = '' + date.getDate(),
-            //         year = date.getFullYear();
-
-            //     if (month.length < 2)
-            //         month = '0' + month;
-            //     if (day.length < 2)
-            //         day = '0' + day;
-
-            //     return [day, month, year].join('/');
-            // }
-
+            
             //using event listeners
             linkedPicker1Element.addEventListener(tempusDominus.Namespace.events.change, (e) => {
                 linked2.clear();
@@ -149,6 +126,9 @@
                                         <span class='fa-solid fa-calendar'></span>
                                     </span>
                                 </div>
+                                @if ($errors->has('startDate'))
+                                    <span class="text-danger">{{ $errors->first('startDate') }}</span>
+                                @endif
                             </div>
                             <div class='col-sm-6'>
                                 <label for='endDate' class='form-label'>To</label>
@@ -161,8 +141,27 @@
                                         <span class='fa-solid fa-calendar'></span>
                                     </span>
                                 </div>
+                                @if ($errors->has('endDate'))
+                                    <span class="text-danger">{{ $errors->first('endDate') }}</span>
+                                @endif
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="location" name="location"
+                            placeholder="Location" value="{{ $event->location }}">
+                        @if ($errors->has('location'))
+                            <span class="text-danger">{{ $errors->first('location') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="limit" class="form-label">Number of participants</label>
+                        <input type="number" class="form-control" id="limit" name="limit"
+                            placeholder="Number of participants" value="{{ $event->limit }}">
+                        @if ($errors->has('limit'))
+                            <span class="text-danger">{{ $errors->first('limit') }}</span>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -173,12 +172,18 @@
                     <div class="form-group mb-3">
                         <input type="text" placeholder="Name" id="name" class="form-control" name="name" value="{{ $event->name }}">
                     </div>
+                    @if ($errors->has('name'))
+                        <span class="text-danger">{{ $errors->first('name') }}</span>
+                    @endif
                 </div>
                 <div class="p-2 bd-highlight flex-fill">
                     <h3>Event description</h3>
                     <div class="form-group mb-3">
                         <textarea placeholder="Description" id="description" class="form-control" name="description" rows="17">{{ $event->description }}</textarea>
                     </div>
+                    @if ($errors->has('description'))
+                        <span class="text-danger">{{ $errors->first('description') }}</span>
+                    @endif
                 </div>
                 <div class="p-2 bd-highlight align-self-end">
                     <button type="button" onclick="submitForm()" class="btn btn-primary">Done</button>

@@ -50,6 +50,33 @@ class EventController extends Controller
         return view('event.addEvent');
     }
 
+    public function addEvent(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'location' => 'required',
+            'limit' => 'required',
+            'startDate' => 'required',
+            'endDate' => 'required',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $file->move(public_path('images/event_images'), $filename);
+            $data['image'] = $filename;
+        } else {
+            $data['image'] = "";
+        }
+
+        $event = $this->createEvent($data);
+
+        return redirect()->route('event.show', ['id' => $event->id])->withSuccess("Event created");
+    }
+
     public function getEditEventView($id)
     {
         $event = Event::find($id);
@@ -68,6 +95,8 @@ class EventController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
+            'location' => 'required',
+            'limit' => 'required',
             'startDate' => 'required',
             'endDate' => 'required',
         ]);
@@ -104,9 +133,9 @@ class EventController extends Controller
             }
             $event->delete();
 
-            return redirect()->route('event.viewCreated');
+            return redirect()->route('event.viewCreated')->withSuccess("Event deleted");
         } else {
-            return response('Cannot delete event you did not create', 403);
+            return redirect()->route('event.viewCreated')->withError("You are not the owner of this event");
         }
     }
 
@@ -157,33 +186,6 @@ class EventController extends Controller
             }
             return redirect()->route('event.show', ['id' => $id])->withError($message);
         }
-    }
-
-    public function addEvent(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'location' => 'required',
-            'limit' => 'required',
-            'startDate' => 'required',
-            'endDate' => 'required',
-        ]);
-
-        $data = $request->all();
-
-        if ($request->file('image')) {
-            $file = $request->file('image');
-            $filename = date('YmdHi') . $file->getClientOriginalName();
-            $file->move(public_path('images/event_images'), $filename);
-            $data['image'] = $filename;
-        } else {
-            $data['image'] = "";
-        }
-
-        $event = $this->createEvent($data);
-
-        return redirect()->route('event.show', ['id' => $event->id])->withSuccess("Event created");
     }
 
     public function showPendingEvents()
@@ -372,6 +374,8 @@ class EventController extends Controller
         if (array_key_exists('image', $data)) {
             $event->image = $data['image'];
         }
+        $event->location = $data['location'];
+        $event->limit = $data['limit'];
         $event->start_date = $data['startDate'];
         $event->end_date = $data['endDate'];
         $event->status = Event::PENDING;
